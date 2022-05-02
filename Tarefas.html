@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
+
+    :root {
+      --primary: rgb(53, 28, 4);
+    }
+
+    * {
+      box-sizing: border-box;
+      outline: 0;
+      color: white;
+      font-family: "Ubuntu", sans-serif;
+
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 50px;
+      max-width: 80%;
+
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: red;
+
+      overflow-x: hidden !important;
+    }
+
+    .containerr {
+
+      display: grid;
+
+      justify-items: center;
+
+
+
+      width: 100%;
+      height: 100%;
+      grid-template-columns: 100%;
+      grid-template-rows: 70px 130px auto;
+      background-color: black;
+
+
+    }
+
+
+
+    form input:focus {
+      outline: 1px solid rgb(0, 247, 255);
+      color: black;
+      font-size: 20px;
+      text-align: center;
+
+
+
+    }
+
+    form {
+
+      display: grid;
+
+      justify-items: center;
+      align-items: center;
+
+      width: 100%;
+      height: 100%;
+
+    }
+
+    input {
+      width: 100%;
+      height: 100%;
+      color: black;
+      font-size: 20px;
+      text-align: center;
+
+    }
+
+    /* tarefas   */
+
+    #listaDeTarefas {
+      font-size: 3vh;
+      display: grid;
+
+      grid-template-columns: 100%;
+      width: 100%;
+
+
+      position: relative;
+      /* grid-template-columns: 80% 20%; */
+
+
+    }
+
+    p {
+      /* border: 0px;
+  border-top: 1px;
+  border-bottom: 1px;
+
+  border-color: white;
+  border-style: solid; */
+
+      text-align: center;
+      margin: 5px;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .tarefa {
+      display: grid;
+
+      grid-auto-rows: auto;
+      grid-template-columns: 80% 20%;
+
+
+      width: 100%;
+
+      align-items: center;
+      justify-items: center;
+      justify-content: center;
+      padding: 20px 0px;
+
+      border: 0px;
+      border-top: 1px;
+      border-color: white;
+      border-style: solid;
+    }
+
+    .mx-2 {
+      height: 100%;
+    }
+
+    .submit {
+      height: 100%;
+      width: 100%;
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body class="bg-dark">
+
+  <div class="containerr">
+    <h1>Tarefas</h1>
+
+    <form id="form" action="">
+      <input type="text" id="input-teste-1">
+      <button type="submit" class="btn btn-dark bg-dark submit">Adicionar Tarefa</button>
+    </form>
+    <div id="listaDeTarefas">
+
+      <!-- <div class="tarefa">
+
+            <p>Comprar uma bola pro michael que ta doente</p>
+            <button class="btn btn-dark mx-2"><i class="material-icons" style=" font-size: 30px;">
+                  check</i></button>
+         </div>
+
+         <div class="tarefa">
+
+            <p>Fazer compras</p>
+            <button class="btn btn-dark mx-2"><i class="material-icons" style=" font-size: 30px;">
+                  check</i></button>
+         </div>
+
+         <div class="tarefa">
+
+            <p>Comprar uma bola pro michael que ta doente</p>
+            <button class="btn btn-dark mx-2"><i class="material-icons" style=" font-size: 30px;">
+                  check</i></button>
+         </div>
+
+         <div class="tarefa">
+
+            <p>Comprar uma bola pro michael que ta doente</p>
+            <button class="btn btn-dark mx-2"><i class="material-icons" style=" font-size: 30px;">
+                  check</i></button>
+         </div>
+
+         <div class="tarefa">
+
+            <p>Comprar uma bola pro michael que ta doente</p>
+            <button class="btn btn-dark mx-2"><i class="material-icons" style=" font-size: 30px;">
+                  check</i></button>
+         </div> -->
+
+    </div>
+  </div>
+
+</body>
+<script>
+  let Nt = 0;
+
+  if (localStorage.Ntarefa) {
+    let Nt = localStorage.getItem("Ntarefa");
+    Nt = parseInt(Nt);
+
+    for (let i = 0; i <= Nt; i++) {
+      let tarefa = localStorage.getItem(i);
+
+      if (tarefa !== null) {
+        ul = document.getElementById("listaDeTarefas");
+        let tagCriada = document.createElement("div");
+
+        tagCriada.innerHTML = `
+      <p>${tarefa}</p>
+      <button nt="${i}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
+            check</i></button>`;
+
+        tagCriada.classList.add("tarefa");
+        tagCriada.id = `nt${i}`;
+        ul.appendChild(tagCriada);
+      }
+    }
+  }
+
+  var apagarTarefa;
+
+  function carregarTarefas(Nt) {
+    let tarefa = localStorage.getItem(Nt);
+
+    ul = document.getElementById("listaDeTarefas");
+    let tagCriada = document.createElement("div");
+
+    tagCriada.innerHTML = `
+  <p>${tarefa}</p>
+  <button nt="${Nt}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
+        check</i></button>`;
+
+    tagCriada.classList.add("tarefa");
+    tagCriada.id = `nt${Nt}`;
+    ul.appendChild(tagCriada);
+    apagarTarefa();
+  }
+
+  //let btn = document.getElementsByTagName("nt");
+
+  function carregado() {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      var tarefa = $("#input-teste-1").val();
+      console.log(tarefa);
+
+      if (localStorage.Ntarefa) {
+        let Nt = localStorage.getItem("Ntarefa");
+        Nt = parseInt(Nt);
+
+        Nt = Nt + 1;
+        console.log(Nt);
+
+        localStorage.setItem(Nt, tarefa);
+        localStorage.setItem("Ntarefa", Nt);
+        carregarTarefas(Nt);
+      } else {
+        localStorage.setItem(Nt, tarefa);
+        localStorage.setItem("Ntarefa", Nt);
+        carregarTarefas(Nt);
+      }
+    });
+  }
+
+  apagarTarefa = function () {
+    $(".apagarTarefa").on("click", function (event) {
+      // event.stopPropagation();
+      // event.stopImmediatePropagation();
+
+      console.log("oi");
+      var nt = this.getAttribute("nt");
+      localStorage.removeItem(nt);
+
+      let divt = document.getElementById(`nt${nt}`);
+      divt.remove();
+    });
+  };
+  apagarTarefa();
+
+  window.addEventListener("load", carregado);
+
+</script>
+
+</html>
