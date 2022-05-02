@@ -1,98 +1,81 @@
-let Nt = 0;
+const inputTarefa = document.querySelector("#input-tarefa");
+const btnAddTarefa = document.querySelector("#btn-add-tarefa");
+const divListaDeTarefas = document.querySelector("#div-lista-de-tarefas");
 
-if (localStorage.Ntarefa) {
-  let Nt = localStorage.getItem("Ntarefa");
-  Nt = parseInt(Nt);
+function loadSotoreTarefas() {
+  const listaDeTarefas = localStorage.getItem("tarefas");
+  const tarefas = JSON.parse(listaDeTarefas);
 
-  for (let i = 0; i <= Nt; i++) {
-    let tarefa = localStorage.getItem(i);
-
-    if (tarefa !== null) {
-      ul = document.getElementById("listaDeTarefas");
-      let tagCriada = document.createElement("div");
-
-      tagCriada.innerHTML = `
-      <p>${tarefa}</p>
-      <button nt="${i}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
-            check</i></button>`;
-
-      tagCriada.classList.add("tarefa");
-      tagCriada.id = `nt${i}`;
-      ul.appendChild(tagCriada);
-    }
+  if (!listaDeTarefas) return;
+  for (let tarefa of tarefas) {
+    console.log(tarefa);
+    criaTarefa(tarefa);
   }
 }
+loadSotoreTarefas();
 
-var apagarTarefa;
+function storeTarefa() {
+  let listarTarefas = divListaDeTarefas.querySelectorAll("div");
+  listaDeTarefas = [];
 
-function carregarTarefas(Nt) {
-  let tarefa = localStorage.getItem(Nt);
-
-  ul = document.getElementById("listaDeTarefas");
-  let tagCriada = document.createElement("div");
-
-  tagCriada.innerHTML = `
-  <p>${tarefa}</p>
-  <button nt="${Nt}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
-        check</i></button>`;
-
-  tagCriada.classList.add("tarefa");
-  tagCriada.id = `nt${Nt}`;
-  ul.appendChild(tagCriada);
-  apagarTarefa();
+  for (let tarefa of listarTarefas) {
+    let tarefaText = tarefa.innerText;
+    tarefaText = tarefaText.replace("check", "");
+    tarefaText = tarefaText.replace("\n\n", "");
+    listaDeTarefas.push(tarefaText);
+    console.log(listaDeTarefas);
+  }
+  const tarefasJSON = JSON.stringify(listaDeTarefas);
+  localStorage.setItem("tarefas", tarefasJSON);
 }
 
-//let btn = document.getElementsByTagName("nt");
+function addDiv() {
+  const div = document.createElement("div");
+  return div;
+}
 
-form.addEventListener("keypress", function (e) {
-  if (e.keyCode === 13) {
-    carregado();
+function criaTarefa(tarefa) {
+  const div = addDiv();
+  div.innerHTML = `<p>${tarefa}</p>
+  <button class="btn btn-dark mx-2 dell-tarefa">
+  <i class="material-icons icon-dell-tarefa" style=" font-size: 30px;">
+  check</i>
+  </button>`;
+  div.setAttribute("class", "tarefa");
+  divListaDeTarefas.appendChild(div);
+  storeTarefa();
+}
+
+/////////////////// Inputs //////////////////////////
+
+function cleanInput() {
+  inputTarefa.value = "";
+  inputTarefa.focus();
+}
+
+btnAddTarefa.addEventListener("click", function (e) {
+  if (!inputTarefa.value) return;
+  criaTarefa(inputTarefa.value);
+  cleanInput();
+});
+
+inputTarefa.addEventListener("keypress", function (key) {
+  if (key.keyCode === 13) {
+    if (!inputTarefa.value) return;
+    criaTarefa(inputTarefa.value);
+    cleanInput();
   }
 });
 
-function carregado() {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+document.addEventListener("click", function (key) {
+  const element = key.target;
 
-    var tarefa = $("#input-teste-1").val();
-
-    if (tarefa == "") return;
-    console.log(tarefa);
-
-    if (localStorage.Ntarefa) {
-      let Nt = localStorage.getItem("Ntarefa");
-      Nt = parseInt(Nt);
-
-      Nt = Nt + 1;
-      console.log(Nt);
-
-      localStorage.setItem(Nt, tarefa);
-      localStorage.setItem("Ntarefa", Nt);
-      carregarTarefas(Nt);
-    } else {
-      localStorage.setItem(Nt, tarefa);
-      localStorage.setItem("Ntarefa", Nt);
-      carregarTarefas(Nt);
-    }
-
-    tempTarefa = document.querySelector("#input-teste-1");
-    tempTarefa.value = "";
-    tempTarefa.focus();
-  });
-}
-
-apagarTarefa = function () {
-  $(".apagarTarefa").on("click", function (event) {
-    // event.stopPropagation();
-    // event.stopImmediatePropagation();
-
-    console.log("oi");
-    var nt = this.getAttribute("nt");
-    localStorage.removeItem(nt);
-
-    this.parentElement.remove();
-  });
-};
-apagarTarefa();
-
-window.addEventListener("load", carregado);
+  if (element.classList.contains("dell-tarefa")) {
+    element.parentElement.remove();
+    storeTarefa();
+  } else if (element.classList.contains("icon-dell-tarefa")) {
+    btn = element.parentElement;
+    btn.parentElement.remove();
+    storeTarefa();
+  }
+});
