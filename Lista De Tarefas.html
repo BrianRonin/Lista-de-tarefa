@@ -63,7 +63,7 @@
 
 
 
-    form input:focus {
+    #form input:focus {
       outline: 1px solid rgb(0, 247, 255);
       color: black;
       font-size: 20px;
@@ -73,7 +73,7 @@
 
     }
 
-    form {
+    #form {
 
       display: grid;
 
@@ -96,7 +96,7 @@
 
     /* tarefas   */
 
-    #listaDeTarefas {
+    #div-lista-de-tarefas {
       font-size: 3vh;
       display: grid;
 
@@ -112,15 +112,16 @@
 
     p {
       /* border: 0px;
-  border-top: 1px;
-  border-bottom: 1px;
-
-  border-color: white;
-  border-style: solid; */
+      border-top: 1px;
+      border-bottom: 1px;
+    
+      border-color: white;
+      border-style: solid; */
 
       text-align: center;
       margin: 5px;
       max-width: 100%;
+
       overflow-wrap: break-word;
       word-wrap: break-word;
       hyphens: auto;
@@ -163,11 +164,11 @@
   <div class="containerr">
     <h1>Tarefas</h1>
 
-    <form id="form" action="">
-      <input type="text" id="input-teste-1">
-      <button type="submit" class="btn btn-dark bg-dark submit">Adicionar Tarefa</button>
-    </form>
-    <div id="listaDeTarefas">
+    <p id="form" action="">
+      <input type="text" id="input-tarefa">
+      <button id="btn-add-tarefa" class="btn btn-dark bg-dark submit">Adicionar Tarefa</button>
+    </p>
+    <div id="div-lista-de-tarefas">
 
       <!-- <div class="tarefa">
 
@@ -208,95 +209,87 @@
   </div>
 
 </body>
-<script>
-  let Nt = 0;
+<script>const inputTarefa = document.querySelector("#input-tarefa");
+  const btnAddTarefa = document.querySelector("#btn-add-tarefa");
+  const divListaDeTarefas = document.querySelector("#div-lista-de-tarefas");
 
-  if (localStorage.Ntarefa) {
-    let Nt = localStorage.getItem("Ntarefa");
-    Nt = parseInt(Nt);
+  function loadSotoreTarefas() {
+    const listaDeTarefas = localStorage.getItem("tarefas");
+    const tarefas = JSON.parse(listaDeTarefas);
 
-    for (let i = 0; i <= Nt; i++) {
-      let tarefa = localStorage.getItem(i);
-
-      if (tarefa !== null) {
-        ul = document.getElementById("listaDeTarefas");
-        let tagCriada = document.createElement("div");
-
-        tagCriada.innerHTML = `
-      <p>${tarefa}</p>
-      <button nt="${i}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
-            check</i></button>`;
-
-        tagCriada.classList.add("tarefa");
-        tagCriada.id = `nt${i}`;
-        ul.appendChild(tagCriada);
-      }
+    if (!listaDeTarefas) return;
+    for (let tarefa of tarefas) {
+      console.log(tarefa);
+      criaTarefa(tarefa);
     }
   }
+  loadSotoreTarefas();
 
-  var apagarTarefa;
+  function storeTarefa() {
+    let listarTarefas = divListaDeTarefas.querySelectorAll("div");
+    listaDeTarefas = [];
 
-  function carregarTarefas(Nt) {
-    let tarefa = localStorage.getItem(Nt);
-
-    ul = document.getElementById("listaDeTarefas");
-    let tagCriada = document.createElement("div");
-
-    tagCriada.innerHTML = `
-  <p>${tarefa}</p>
-  <button nt="${Nt}" class="btn btn-dark mx-2 apagarTarefa"><i class="material-icons" style=" font-size: 30px;">
-        check</i></button>`;
-
-    tagCriada.classList.add("tarefa");
-    tagCriada.id = `nt${Nt}`;
-    ul.appendChild(tagCriada);
-    apagarTarefa();
+    for (let tarefa of listarTarefas) {
+      let tarefaText = tarefa.innerText;
+      tarefaText = tarefaText.replace("check", "");
+      tarefaText = tarefaText.replace("\n\n", "");
+      listaDeTarefas.push(tarefaText);
+      console.log(listaDeTarefas);
+    }
+    const tarefasJSON = JSON.stringify(listaDeTarefas);
+    localStorage.setItem("tarefas", tarefasJSON);
   }
 
-  //let btn = document.getElementsByTagName("nt");
-
-  function carregado() {
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      var tarefa = $("#input-teste-1").val();
-      console.log(tarefa);
-
-      if (localStorage.Ntarefa) {
-        let Nt = localStorage.getItem("Ntarefa");
-        Nt = parseInt(Nt);
-
-        Nt = Nt + 1;
-        console.log(Nt);
-
-        localStorage.setItem(Nt, tarefa);
-        localStorage.setItem("Ntarefa", Nt);
-        carregarTarefas(Nt);
-      } else {
-        localStorage.setItem(Nt, tarefa);
-        localStorage.setItem("Ntarefa", Nt);
-        carregarTarefas(Nt);
-      }
-    });
+  function addDiv() {
+    const div = document.createElement("div");
+    return div;
   }
 
-  apagarTarefa = function () {
-    $(".apagarTarefa").on("click", function (event) {
-      // event.stopPropagation();
-      // event.stopImmediatePropagation();
+  function criaTarefa(tarefa) {
+    const div = addDiv();
+    div.innerHTML = `<p>${tarefa}</p>
+    <button class="btn btn-dark mx-2 dell-tarefa">
+    <i class="material-icons icon-dell-tarefa" style=" font-size: 30px;">
+    check</i>
+    </button>`;
+    div.setAttribute("class", "tarefa");
+    divListaDeTarefas.appendChild(div);
+    storeTarefa();
+  }
 
-      console.log("oi");
-      var nt = this.getAttribute("nt");
-      localStorage.removeItem(nt);
+  /////////////////// Inputs //////////////////////////
 
-      let divt = document.getElementById(`nt${nt}`);
-      divt.remove();
-    });
-  };
-  apagarTarefa();
+  function cleanInput() {
+    inputTarefa.value = "";
+    inputTarefa.focus();
+  }
 
-  window.addEventListener("load", carregado);
+  btnAddTarefa.addEventListener("click", function (e) {
+    if (!inputTarefa.value) return;
+    criaTarefa(inputTarefa.value);
+    cleanInput();
+  });
 
+  inputTarefa.addEventListener("keypress", function (key) {
+    if (key.key == "Enter") {
+      if (!inputTarefa.value) return;
+      criaTarefa(inputTarefa.value);
+      cleanInput();
+    }
+  });
+
+  document.addEventListener("click", function (key) {
+    const element = key.target;
+
+    if (element.classList.contains("dell-tarefa")) {
+      element.parentElement.remove();
+      storeTarefa();
+    } else if (element.classList.contains("icon-dell-tarefa")) {
+      btn = element.parentElement;
+      btn.parentElement.remove();
+      storeTarefa();
+    }
+  });
 </script>
 
 </html>
